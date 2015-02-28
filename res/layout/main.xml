@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="@color/white"
+  android:gravity="center_vertical">
+
+  <TextView android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/next_isuca"
+    android:id="@+id/textView"
+    android:textSize="@dimen/large_text"
+    android:textColor="@color/isuca"
+    android:layout_gravity="center"
+    android:textStyle="bold"
+    android:shadowColor="@color/isuca"
+    android:shadowDx="0.0"
+    android:shadowDy="0.0"
+    android:shadowRadius="20"/>
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:id="@+id/time"
+    android:layout_gravity="center_horizontal"
+    android:textColor="@color/isuca"
+    android:textStyle="bold"
+    android:textSize="@dimen/time_text"
+    android:shadowColor="@color/isuca"
+    android:shadowDx="0.0"
+    android:shadowDy="0.0"
+    android:shadowRadius="20"/>
+
+</LinearLayout>
+
