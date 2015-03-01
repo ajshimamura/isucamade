@@ -1,15 +1,15 @@
 package com.ajshimamura.isucamade;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
@@ -25,11 +25,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MyActivity extends Activity {
+  final int MX = 0;
+  final int BS11 = 1;
+  final String[] KEYS = {"MX", "BS11"};
+  private int channel;
   private ShareActionProvider mShareActionProvider;
+  private Menu menu;
 
-  /**
-   * Called when the activity is first created.
-   */
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -37,7 +39,21 @@ public class MyActivity extends Activity {
     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
     StrictMode.setThreadPolicy(policy);
 
+    saveChannel(readChannel());
     setContentView(R.layout.main);
+  }
+
+  private int readChannel() {
+    SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+    channel = sharedPref.getInt(getString(R.string.preference_channel), MX);
+    return channel;
+  }
+
+  private void saveChannel(int channel) {
+    SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+    SharedPreferences.Editor editor = sharedPref.edit();
+    editor.putInt(getString(R.string.preference_channel), channel);
+    editor.apply();
   }
 
   @Override
@@ -49,7 +65,6 @@ public class MyActivity extends Activity {
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu items for use in the action bar
     getMenuInflater().inflate(R.menu.main_activity_actions, menu);
 
     MenuItem item = menu.findItem(R.id.menu_item_share);
@@ -57,19 +72,48 @@ public class MyActivity extends Activity {
 
     setTime();
 
+    this.menu = menu;
+    setIcon();
+
     return super.onCreateOptionsMenu(menu);
   }
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle presses on the action bar items
     switch (item.getItemId()) {
       case R.id.action_refresh:
         refresh();
         return true;
+      case R.id.change_channel:
+        changeChannel();
+        return true;
       default:
         return super.onOptionsItemSelected(item);
     }
+  }
+
+  private void changeChannel() {
+    new AlertDialog.Builder(this)
+      .setTitle("局かえる？")
+      .setItems(KEYS, new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int which) {
+            if (channel != which) {
+              channel = which;
+              saveChannel(channel);
+              setIcon();
+              setTime();
+            }
+          }
+        }
+      )
+      .show();
+  }
+
+  private void setIcon() {
+    MenuItem item = menu.findItem(R.id.change_channel);
+    int icon = getResources().getIdentifier(KEYS[channel].toLowerCase(), "drawable", getPackageName());
+    Log.d("isucamade", String.format("%d", icon));
+    item.setIcon(icon);
   }
 
   private void setShareIntent(Intent shareIntent) {
@@ -99,7 +143,7 @@ public class MyActivity extends Activity {
 
       Intent sendIntent = new Intent();
       sendIntent.setAction(Intent.ACTION_SEND);
-      sendIntent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_text), min));
+      sendIntent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_text), min, KEYS[channel]));
       sendIntent.setType("text/plain");
       setShareIntent(sendIntent);
 
@@ -110,7 +154,7 @@ public class MyActivity extends Activity {
 
   private void textFill() {
     TextView message = (TextView) findViewById(R.id.textView);
-    if ( message.getLineCount() != 1 ) {
+    if (message.getLineCount() != 1) {
       message.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, message.getTextSize());
       message.post(new Runnable() {
         @Override
@@ -132,17 +176,17 @@ public class MyActivity extends Activity {
       InputStream in = new BufferedInputStream(urlConnection.getInputStream());
       ByteArrayOutputStream bo = new ByteArrayOutputStream();
       int i = in.read();
-      while(i != -1) {
+      while (i != -1) {
         bo.write(i);
         i = in.read();
       }
-      Log.d("isuca",bo.toString());
+      Log.d("isuca", bo.toString());
       try {
         JSONObject json = new JSONObject(bo.toString());
-        JSONArray mx = json.getJSONArray("mx");
+        JSONArray data = json.getJSONArray(KEYS[channel]);
 
         Time nextIsuca = new Time();
-        nextIsuca.set(mx.getInt(0), mx.getInt(1), mx.getInt(2), mx.getInt(3), mx.getInt(4)-1, mx.getInt(5));
+        nextIsuca.set(data.getInt(0), data.getInt(1), data.getInt(2), data.getInt(3), data.getInt(4) - 1, data.getInt(5));
         return nextIsuca;
 
       } catch (JSONException e) {

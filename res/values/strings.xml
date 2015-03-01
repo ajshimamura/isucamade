@@ -4,5 +4,7 @@
   <string name="next_isuca">次の ISUCA まで</string>
   <string name="action_refresh">更新</string>
   <string name="share">シェア</string>
-  <string name="share_text">ISUCA まで%d分です。 #isucamade</string>
+  <string name="change_channel">チャンネル</string>
+  <string name="preference_channel">preference_channel</string>
+  <string name="share_text" formatted="false">ISUCA まで%d分です。 #isucamade #%s</string>
 </resources>

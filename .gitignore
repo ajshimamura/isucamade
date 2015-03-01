@@ -2,3 +2,5 @@ local.properties
 gen/
 bin/
 out/
+proguard_logs
+isucamade.apk
