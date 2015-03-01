@@ -2,6 +2,8 @@ package com.ajshimamura.isucamade;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.format.Time;
@@ -58,12 +60,6 @@ public class MyActivity extends Activity {
     return super.onCreateOptionsMenu(menu);
   }
 
-  private void setShareIntent(Intent shareIntent) {
-    if (mShareActionProvider != null) {
-      mShareActionProvider.setShareIntent(shareIntent);
-    }
-  }
-
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     // Handle presses on the action bar items
@@ -73,6 +69,12 @@ public class MyActivity extends Activity {
         return true;
       default:
         return super.onOptionsItemSelected(item);
+    }
+  }
+
+  private void setShareIntent(Intent shareIntent) {
+    if (mShareActionProvider != null) {
+      mShareActionProvider.setShareIntent(shareIntent);
     }
   }
 
@@ -93,6 +95,8 @@ public class MyActivity extends Activity {
       TextView time = (TextView) findViewById(R.id.output_time);
       time.setText(String.format("%d分", min));
 
+      textFill();
+
       Intent sendIntent = new Intent();
       sendIntent.setAction(Intent.ACTION_SEND);
       sendIntent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_text), min));
@@ -101,6 +105,23 @@ public class MyActivity extends Activity {
 
     } catch (IOException e) {
       e.printStackTrace();
+    }
+  }
+
+  private void textFill() {
+    TextView message = (TextView) findViewById(R.id.textView);
+    if ( message.getLineCount() != 1 ) {
+      message.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, message.getTextSize());
+      message.post(new Runnable() {
+        @Override
+        public void run() {
+          TextView message = (TextView) findViewById(R.id.textView);
+          if (message.getLineCount() > 1) {
+            message.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, message.getTextSize() - 5);
+            textFill();
+          }
+        }
+      });
     }
   }
 
