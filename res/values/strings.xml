@@ -2,4 +2,7 @@
 <resources>
   <string name="app_name">ISUCA まで</string>
   <string name="next_isuca">次の ISUCA まで</string>
+  <string name="action_refresh">更新</string>
+  <string name="share">シェア</string>
+  <string name="share_text">ISUCA まで%d分です。 #isucamade</string>
 </resources>
