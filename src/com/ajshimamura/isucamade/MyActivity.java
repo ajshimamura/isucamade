@@ -27,7 +27,9 @@ import java.net.URL;
 public class MyActivity extends Activity {
   final int MX = 0;
   final int BS11 = 1;
-  final String[] KEYS = {"MX", "BS11"};
+  final String[] KEYS = {"MX", "BS11", "D"};
+  final String[] LABELS = {"TOKYO MX", "BS11", "dアニメストア"};
+  final String[] HASHTAGS = {"tokyomx", "bs11", "dアニメストア"};
   private int channel;
   private ShareActionProvider mShareActionProvider;
   private Menu menu;
@@ -95,7 +97,7 @@ public class MyActivity extends Activity {
   private void changeChannel() {
     new AlertDialog.Builder(this)
       .setTitle("局かえる？")
-      .setItems(KEYS, new DialogInterface.OnClickListener() {
+      .setItems(LABELS, new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int which) {
             if (channel != which) {
               channel = which;
@@ -143,7 +145,7 @@ public class MyActivity extends Activity {
 
       Intent sendIntent = new Intent();
       sendIntent.setAction(Intent.ACTION_SEND);
-      sendIntent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_text), min, KEYS[channel]));
+      sendIntent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_text), min, HASHTAGS[channel]));
       sendIntent.setType("text/plain");
       setShareIntent(sendIntent);
 
