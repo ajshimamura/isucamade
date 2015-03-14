@@ -27,9 +27,9 @@ import java.net.URL;
 public class MyActivity extends Activity {
   final int MX = 0;
   final int BS11 = 1;
-  final String[] KEYS = {"MX", "BS11", "D"};
-  final String[] LABELS = {"TOKYO MX", "BS11", "dアニメストア"};
-  final String[] HASHTAGS = {"tokyomx", "bs11", "dアニメストア"};
+  final String[] KEYS = {"MX", "BS11", "SAI", "D"};
+  final String[] LABELS = {"TOKYO MX", "BS11", "テレビ埼玉", "dアニメストア"};
+  final String[] HASHTAGS = {"tokyomx", "bs11", "テレ玉", "dアニメストア"};
   private int channel;
   private ShareActionProvider mShareActionProvider;
   private Menu menu;
