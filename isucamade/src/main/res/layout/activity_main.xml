@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+        <fragment
+                android:name="com.google.android.youtube.player.YouTubePlayerFragment"
+                android:id="@+id/youtube_fragment"
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_centerVertical="true"
+                      android:orientation="vertical"
+                      android:layout_above="@id/youtube_fragment"
+                      android:paddingBottom="@dimen/time_text">
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="@string/next_isuca"
+                      android:id="@+id/textView"
+                      android:textSize="@dimen/large_text"
+                      android:textColor="@color/isuca"
+                      android:layout_gravity="center_horizontal"
+                      android:textStyle="bold"
+                      android:shadowColor="@color/isuca"
+                      android:shadowDx="0.0"
+                      android:shadowDy="0.0"
+                      android:shadowRadius="20"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textAppearance="?android:attr/textAppearanceLarge"
+                      android:id="@+id/output_time"
+                      android:text=""
+                      android:layout_gravity="center_horizontal"
+                      android:textColor="@color/isuca"
+                      android:textStyle="bold"
+                      android:textSize="@dimen/time_text"
+                      android:shadowColor="@color/isuca"
+                      android:shadowDx="0.0"
+                      android:shadowDy="0.0"
+                      android:shadowRadius="20"/>
+        </LinearLayout>
+
+</RelativeLayout>
